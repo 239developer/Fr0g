@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Jumper : MonoBehaviour
@@ -17,7 +17,7 @@ public class Jumper : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
            pointing = true;
-           startPoint = Input.mousePosition;
+           startPoint = (Vector2)Input.mousePosition;
            startPoint -= new Vector2(Screen.width / 2f, Screen.height / 2f);
         }
 
@@ -25,7 +25,7 @@ public class Jumper : MonoBehaviour
         {
             bias = startPoint - (Vector2)Input.mousePosition;
             arrow.SetActive(true);
-            arrow.transform.rotation = Quaternion.Euler(-1f * bias);
+            arrow.transform.LookAt(new Vector3(0f, 0f, 0f));
         }
 
         if(!pointing)
@@ -52,10 +52,7 @@ public class Jumper : MonoBehaviour
     {
         arrow.transform.position = transform.position + Vector3.forward;
         _camera.transform.position = transform.position - Vector3.forward;
-        arrow.transform.Rotate(0f, 0f, arrowRotSpeed * Time.deltaTime);
         arrow.SetActive(!jump);
-        if(!isGrounded)
-            arrow.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
         rb.AddForce(Jump());
     }
